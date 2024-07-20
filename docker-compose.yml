@@ -1,0 +1,70 @@
+version: '3.8'
+
+services:
+    app:
+        build:
+            context: ./
+            dockerfile: docker/docker-compose/php/php.dockerfile
+            args:
+                user: matheus
+                uid: 1000
+        image: php83
+        container_name: ${APP_NAME:-php}-app
+        restart: unless-stopped
+        working_dir: /var/www
+        volumes:
+            - ./:/var/www
+            - ./docker/docker-compose/php/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+            - ./docker/docker-compose/php/php.ini:/usr/local/etc/php/conf.d/php.ini
+            - ./docker/docker-compose/php/.bashrc:/home/matheusgoncalves/.bashrc
+        networks:
+            - dev
+
+    nginx:
+        image: nginx:alpine
+        container_name: ${APP_NAME:-web}-nginx
+        restart: unless-stopped
+        ports:
+            - "9001:8000"
+        volumes:
+            - ./:/var/www
+            - ./docker/docker-compose/nginx:/etc/nginx/conf.d
+        networks:
+            - dev
+        depends_on:
+            - app
+
+#    db:
+#        image: mysql:latest
+#        container_name: ${APP_NAME:-mysql}-db
+#        restart: unless-stopped
+#        environment:
+#            MYSQL_ROOT_PASSWORD: root
+#            MYSQL_DATABASE: ${DB_DATABASE:-contas}
+#            MYSQL_USER: ${DB_USERNAME:-root}
+#            MYSQL_PASSWORD: ${DB_PASSWORD:-123456789}
+#        ports:
+#            - "3306:3306"
+#        volumes:
+#            - /home/${USER}/mysqldb:/var/lib/mysql
+#        networks:
+#            - dev
+
+    db:
+        image: postgres:latest
+        container_name: ${APP_NAME:-postgres}-db
+        restart: unless-stopped
+        environment:
+            POSTGRES_DB: ${DB_DATABASE:-contas}
+            POSTGRES_USER: ${DB_USERNAME:-postgres}
+            POSTGRES_PASSWORD: ${DB_PASSWORD:-123456789}
+        ports:
+            - "5432:5432"
+        volumes:
+            - /home/${USER}/postgresql:/var/lib/postgresql/data
+        networks:
+            - dev
+
+networks:
+    dev:
+        driver: bridge
