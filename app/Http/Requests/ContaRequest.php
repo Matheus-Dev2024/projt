@@ -25,6 +25,7 @@ class ContaRequest extends FormRequest
             'nome' => 'required',
             'valor' => 'required|max:10',
             'vencimento' => 'required',
+            'situacao_conta_id' => 'required',
         ];
     }
     public function messages(): array
@@ -34,6 +35,7 @@ class ContaRequest extends FormRequest
                 'valor.required' => 'Campo Valor Obrigatorio',
                 'valor.max' => 'O preço só pode conter 8 caracteres',
                 'vencimento.required' => 'Campo Vencimento é Obrigatorio',
+                'situacao_conta_id.required' => 'Campo situação da conta é Obrigatorio',
         ];
     }
 }

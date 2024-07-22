@@ -32,9 +32,6 @@
 
             <div class="card-body">
                 <dl class="row">
-                    <dt class="col-sm-3">ID</dt>
-                    <dd class="col-sm-9">{{ $conta->id }}</dd>
-
                     <dt class="col-sm-3">NOME</dt>
                     <dd class="col-sm-9">{{ $conta->nome }}</dd>
 
@@ -43,6 +40,9 @@
 
                     <dt class="col-sm-3">VENCIMENTO</dt>
                     <dd class="col-sm-9">{{ \Carbon\Carbon::parse($conta->vencimento)->tz('America/Sao_Paulo')->format('d/m/Y') }}</dd>
+
+                    <dt class="col-sm-3">SITUAÇÃO</dt>
+                    <dd class="col-sm-9">{!! '<span class="badge text-bg-'.$conta->situacaoConta->cor.'">'.$conta->situacaoConta->nome.'</span>' !!}</dd>
 
                     <dt class="col-sm-3">CADASTRADO</dt>
                     <dd class="col-sm-9">{{\Carbon\Carbon::parse($conta->create_at)->tz('America/Sao_Paulo')->format('d/m/Y H:i:s') }}</dd>

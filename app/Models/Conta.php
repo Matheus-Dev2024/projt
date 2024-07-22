@@ -14,7 +14,7 @@ class Conta extends Model
 
     protected $table = 'contas';
 
-    protected $fillable = ['nome', 'valor', 'vencimento'];
+    protected $fillable = ['nome', 'valor', 'vencimento', 'situacao_conta_id'];
 
     public function situacaoConta()
     {

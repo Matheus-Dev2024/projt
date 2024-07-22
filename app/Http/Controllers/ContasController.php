@@ -40,7 +40,11 @@ class ContasController extends Controller
 
     public function create()
     {
-        return view('contas.create');
+        $situacoesContas = SituacaoConta::orderBy('nome', 'asc')->get();
+
+        return view('contas.create', [
+            'situacoesContas' => $situacoesContas
+        ]);
     }
 
     public function store(ContaRequest $request)
@@ -52,6 +56,7 @@ class ContasController extends Controller
                 'nome' => $validated['nome'],
                 'valor' => str_replace(',', '.', str_replace('.', '', $validated['valor'])),
                 'vencimento' => $validated['vencimento'],
+                'situacao_conta_id' => $validated['situacao_conta_id'],
             ]);
 
             return redirect()->route('contas.show', ['conta' => $conta->id])->with('success', 'Conta cadastrada com sucesso!');
@@ -68,7 +73,8 @@ class ContasController extends Controller
 
     public function edit(Conta $conta)
     {
-        return view('contas.edit', ['conta' => $conta]);
+        $situacoesContas = SituacaoConta::orderBy('nome', 'asc')->get();
+        return view('contas.edit', ['conta' => $conta, 'situacoesContas' => $situacoesContas]);
     }
 
     public function update(ContaRequest $request, Conta $conta)
@@ -80,6 +86,7 @@ class ContasController extends Controller
                 'nome' => $validated['nome'],
                 'valor' => str_replace(',', '.', str_replace('.', '', $validated['valor'])),
                 'vencimento' => $validated['vencimento'],
+                'situacao_conta_id' => $validated['situacao_conta_id'],
             ]);
 
             Log::info('CONTA EDITADA COM SUCESSO', ['id' => $conta->id, 'conta' => $conta]);
