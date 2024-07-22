@@ -13,7 +13,22 @@
                 </span>
             </div>
 
-            @include('components.alert')
+            <script>
+
+                @if(session()->has('success'))
+                document.addEventListener('DOMContentLoaded', () => {
+                        Swal.fire({
+                            title: 'Pronto!',
+                            text: "{{ session('success') }}",
+                            icon: 'success',
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    });
+
+            @endif
+
+            </script>
 
             <div class="card-body">
                 <dl class="row">

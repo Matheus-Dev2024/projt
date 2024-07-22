@@ -1,62 +1,62 @@
 @extends('layouts.admin')
+
 @section('desing')
 
     <div class="container mt-4 container-md-4">
-    <div class="card mt-3 mb-4 border-light shadow">
-        <div class="card-header d-flex justify-content-between">
-            <div class="mt-1">
-            <span><h3>Pesquisar</h3></span>
+        <div class="card mt-3 mb-4 border-light shadow">
+            <div class="card-header d-flex justify-content-between">
+                <div class="mt-1">
+                    <h3>Pesquisar</h3>
+                </div>
             </div>
-        </div>
-        @include('components.alert')
-        <div class="card-body">
-            <form action="{{ route('contas.index') }}">
-                <div class="row">
-                    <div class="container">
-                        <div class=" d-flex mb-3" style="gap: 3rem">
 
-                            <div class="align-content-center mb-3 col-md-3 col-sm-12">
-                                <label class="form-label" for="nome">Nome</label>
-                                <input type="text" name="nome" id="nome" class="form-control" value="{{ $nome }}" placeholder="Nome da conta">
-                                <br>
-                            </div>
+            <div class="card-body">
+                <form action="{{ route('contas.index') }}">
+                    <div class="row">
+                        <div class="container">
+                            <div class="d-flex mb-3" style="gap: 3rem">
+                                <div class="align-content-center mb-3 col-md-3 col-sm-12">
+                                    <label class="form-label" for="nome">Nome</label>
+                                    <input type="text" name="nome" id="nome" class="form-control" value="{{ $nome }}" placeholder="Nome da conta">
+                                </div>
 
-                            <div class="col-md-3 col-sm-12">
-                                <label class="form-label" for="data_inicio">Data Início</label>
-                                <input type="date" name="data_inicio" id="data_inicio" class="form-control" value="{{ $data_inicio }}">
-                            </div>
+                                <div class="col-md-3 col-sm-12">
+                                    <label class="form-label" for="data_inicio">Data Início</label>
+                                    <input type="date" name="data_inicio" id="data_inicio" class="form-control" value="{{ $data_inicio }}">
+                                </div>
 
-                            <div class="mb-3 col-md-3 col-sm-12">
-                               <label class="form-label" for="data_fim">Data Fim</label>
-                               <input type="date" name="data_fim" id="data_fim" class="form-control" value="{{ $data_fim }}">
-                              </div>
+                                <div class="mb-3 col-md-3 col-sm-12">
+                                    <label class="form-label" for="data_fim">Data Fim</label>
+                                    <input type="date" name="data_fim" id="data_fim" class="form-control" value="{{ $data_fim }}">
+                                </div>
 
-                            <div class="ms-auto p-2">
-                                <div class="col-sm-12 mt-4">
-                                    <button class="btn btn-info btn-sm" type="submit">Pesquisar</button>
-                                    <a href="{{ route('contas.index') }}" class="btn btn-warning btn-sm" >Limpar</a>
+                                <div class="ms-auto p-2">
+                                    <div class="col-sm-12 mt-4">
+                                        <button class="btn btn-info btn-sm" type="submit">Pesquisar</button>
+                                        <a href="{{ route('contas.index') }}" class="btn btn-warning btn-sm">Limpar</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
-    </div>
-        <div id="deleteSuccess" class="alert alert-success d-none"></div>
-        <div class="card shadow-sm border-blacke  ">
-            <div class="card-header  d-flex justify-content-between">
+
+        <x-alert />
+
+        <div class="card shadow-sm border-blacke">
+            <div class="card-header d-flex justify-content-between">
                 <div class="mt-1">
-                    <span><h3>Lista de contas</h3></span>
+                    <h3>Lista de contas</h3>
                 </div>
                 <span>
-                    <a class="btn btn-success btn-sm mt-1" href="{{ route('contas.create') }}">Cadastrar</a>
-{{--                    <a class="btn btn-warning btn-sm mt-1" href="{{ route('contas.gerar-pdf') }}">Gerar PDF</a>--}}
-                    <a class="btn btn-warning btn-sm mt-1" href="{{ url('gerar-pdf-conta?' . request()->getQueryString()) }}">Gerar PDF</a>
-                </span>
+                <a class="btn btn-success btn-sm mt-1" href="{{ route('contas.create') }}">Cadastrar</a>
+                <a class="btn btn-warning btn-sm mt-1" href="{{ url('gerar-pdf-conta?' . request()->getQueryString()) }}">Gerar PDF</a>
+            </span>
             </div>
-            <div class="card-body shadow-sm border-black" >
-                <table class="table table-hover border ">
+            <div class="card-body shadow-sm border-black">
+                <table class="table table-hover border">
                     <thead>
                     <tr style="text-align: center" class="table-dark">
                         <th scope="col">ID</th>
@@ -86,24 +86,20 @@
                                         <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
                                     </svg>
                                 </a>
-
-
-                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modalDelete" onclick="selecionarIdParaDeletar({{ $conta->id }})">
+                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modalDelete{{ $conta->id }}">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
                                         <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
                                     </svg>
                                 </button>
-
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td  style="background-color: brown">Nenhuma conta encontrada</td>
+                            <td colspan="5" style="background-color: brown">Nenhuma conta encontrada</td>
                         </tr>
                     @endforelse
                     </tbody>
                 </table>
-
                 <div class="container text-center">
                     <div class="row">
                         <div class="col-auto me-auto"></div>
@@ -113,55 +109,30 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="modalDelete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <form class="d-inline">
-            @csrf
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5">Excluir Conta</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <input type="hidden" name="id" id="idSelecionado">
-                        Deseja realmente excluir esta conta?
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" onclick="deletarConta()" class="btn btn-success" data-bs-dismiss="modal">Sim</button>
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Não</button>
+
+    @foreach($contas as $conta)
+        <div class="modal fade" id="modalDelete{{ $conta->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <form action="{{ route('contas.destroy', ['conta' => $conta->id]) }}" method="POST">
+                @csrf
+                @method('DELETE')
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5">Excluir Conta</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" name="id" value="{{ $conta->id }}">
+                            Deseja realmente excluir esta conta?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success">Sim</button>
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Não</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </form>
-    </div>
+            </form>
+        </div>
+    @endforeach
 
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script>
-
-        function selecionarIdParaDeletar(idSelecionado) {
-            document.getElementById('idSelecionado').value = idSelecionado;
-        }
-
-        function deletarConta() {
-            const baseUrl = '{{ url('') }}';
-            const idParaDeletar = document.getElementById('idSelecionado').value;
-
-            axios.delete(baseUrl+'/contas/destroy/'+idParaDeletar)
-            .then(response => {
-                const mensagemSucesso = document.getElementById('deleteSuccess');
-
-                mostrarMensagem(mensagemSucesso, response.data.message);
-            })
-        }
-
-        function mostrarMensagem(elementoHtml, mensagem) {
-            elementoHtml.textContent = mensagem;
-            elementoHtml.classList.remove('d-none');
-
-            setTimeout(() => {
-                elementoHtml.classList.add('d-none');
-                window.location.reload();
-            }, 1000)
-        }
-    </script>
 @endsection
