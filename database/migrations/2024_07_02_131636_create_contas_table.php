@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('contas', function (Blueprint $table) {
             $table->id();
-            $table->string('nome')->default('Nome padrão')->change();
+            $table->string('nome')->default('Nome padrão');
             $table->float('valor');
             $table->date('vencimento');
 
@@ -26,8 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('contas', function (Blueprint $table) {
-            $table->string('nome')->default(null)->change();
-        });
+        Schema::dropIfExists('contas');
     }
 };

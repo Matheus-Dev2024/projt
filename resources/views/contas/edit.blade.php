@@ -2,25 +2,7 @@
 
 @section('desing')
     <div class="container mt-3">
-        @if(session('ERRO'))
-            <div class="alert alert-danger">
-                {{ session('ERRO') }}
-            </div>
-        @endif
-
-        @if(session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
-
-        @if($errors->any())
-            <div class="alert alert-danger">
-                @foreach($errors->all() as $error)
-                    {{ $error }} <br>
-                @endforeach
-            </div>
-        @endif
+        @include('components.alert')
 
         <div class="card mt-4 mb-4 border-light shadow">
             <div class="card-header d-flex justify-content-between">

@@ -1,52 +1,63 @@
-# Dockerfile para PHP 8.3 FPM com Node.js
-
-# Use a imagem base PHP 8.3 FPM
 FROM php:8.3-fpm
 
-# Argumentos definidos no docker-compose.yml
+# Arguments defined in docker-compose.yml
 ARG user
 ARG uid
 
-# Atualiza e instala as dependências do sistema
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     git \
     curl \
     libonig-dev \
     libpq-dev \
-    libcurl4-openssl-dev \
+    libcurl3-dev \
     unzip \
     vim \
     && apt-get clean
+#    libxml2-dev \
+#    libfontconfig1 \
+#    libxrender1 \
+#    zip \
+#    zlib1g-dev \
+#    && rm -rf /var/lib/apt/lists/*
 
-# Instala as extensões do PHP necessárias
-RUN docker-php-ext-install \
-    curl \
-    pgsql \
-    pdo_pgsql \
-    pdo_mysql \
-    mbstring \
-    exif \
-    pcntl \
-    bcmath
+#=====
+# Install PHP extensions
+#=====
+## Laravel's dependencies
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+RUN docker-php-ext-install curl pgsql pdo_pgsql pdo_mysql mbstring exif pcntl bcmath
 
-# Instala o Xdebug
+#=====xdebug
 RUN pecl install xdebug-3.3.1 \
     && docker-php-ext-enable xdebug
+#=====xdebug
 
-# Instala Node.js e NPM
-RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash - \
-    && apt-get install -y nodejs
+#=====PHPGD
+#RUN apt install -y \
+#    libpng-dev \
+#    libfreetype6-dev \
+#    libjpeg62-turbo-dev \
+#  && docker-php-ext-configure gd --with-jpeg=/usr/include/ --with-freetype=/usr/include/ \
+#  && docker-php-ext-install gd
+#  && apt cache clear
+#=====PHPGD
 
-# Instala o gerenciador de pacotes do Laravel (Composer)
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+#=====Imagic
+#RUN apt install -y libmagickwand-dev \
+#    && pecl install imagick \
+#    && docker-php-ext-enable imagick \
+#    && apt clean
+#=====Imagic
 
-# Cria usuário do sistema para executar comandos do Composer e Artisan
+# Create system user to run Composer and Artisan Commands
 RUN useradd -G www-data,root -u $uid -d /home/$user $user
 RUN mkdir -p /home/$user/.composer && \
     chown -R $user:$user /home/$user
 
-# Define o diretório de trabalho
+# Set working directory
+RUN chown -R $user:www-data /var/www
+
 WORKDIR /var/www
 
-# Define o usuário não-root para execução de comandos dentro do contêiner
 USER $user

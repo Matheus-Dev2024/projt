@@ -8,7 +8,7 @@
             <span><h3>Pesquisar</h3></span>
             </div>
         </div>
-
+        @include('components.alert')
         <div class="card-body">
             <form action="{{ route('contas.index') }}">
                 <div class="row">

@@ -12,11 +12,9 @@
                     <a class="btn btn-info btn-sm" href="{{ route('contas.index') }}">Listar</a>
                 </span>
             </div>
-            @if(session('success'))
-                <div class="alert alert-success m-3">
-                    {{ session('success') }}
-                </div>
-            @endif
+
+            @include('components.alert')
+
             <div class="card-body">
                 <dl class="row">
                     <dt class="col-sm-3">ID</dt>

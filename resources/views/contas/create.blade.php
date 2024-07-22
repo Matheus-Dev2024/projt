@@ -3,14 +3,7 @@
 @section('desing')
 
     <div class="container mt-3">
-
-        @if($errors->any())
-            <div class="alert alert-danger">
-                @foreach($errors->all() as $error)
-                    {{ $error }} <br>
-                @endforeach
-            </div>
-        @endif
+        @include('components.alert')
 
         <div id="msgError" class="alert alert-danger d-none"></div>
         <div id="msgSuccess" class="alert alert-success d-none"></div>
