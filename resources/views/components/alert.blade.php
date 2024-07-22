@@ -11,26 +11,19 @@
         });
     </script>
 @endif
-
-
 @if( $errors->any())
-        @php
-        $mensagem = '';
-        foreach($errors->all() as $error) {
-            $mensagem = $error . '<br>';
-        }
-        @endphp
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let errors = @json( $errors->all());
+            let errorMessage = errors.map(error => `<div>${error}</div>`).join('');
 
-        <script>
-            console.log('deu certo')
-            document.addEventListener('DOMContentLoaded', () => {
-                Swal.fire({
-                    title: 'ERROR!',
-                    text: "{!! $mensagem !!}",
-                    icon: 'error',
-                    timer: 2000,
-                    showConfirmButton: false
-                });
+            Swal.fire({
+                title: 'ATENÇÃO!',
+                html: errorMessage,
+                icon: 'error',
+                timer: 5000,
+                showConfirmButton: false
             });
-        </script>
+        });
+    </script>
 @endif
