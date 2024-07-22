@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ContaRequest;
 use App\Models\Conta;
-use App\Models\RelatorioDiario;
+use App\Models\SituacaoConta;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -23,9 +23,12 @@ class ContasController extends Controller
             ->when($request->filled('data_fim'), function ($query) use ($request) {
                 $query->where('vencimento', '<=', \Carbon\Carbon::parse($request->data_fim)->format('Y-m-d'));
             })
+            ->with('situacaoConta')
             ->orderBy('created_at', 'DESC')
             ->paginate(10)
             ->withQueryString();
+
+
 
         return view('contas.index', [
             'contas' => $contas,

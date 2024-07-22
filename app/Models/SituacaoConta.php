@@ -12,4 +12,9 @@ class SituacaoConta extends Model
     protected $table = 'situacoes_contas';
 
     protected $fillable = ['nome', 'cor'];
+
+    public function conta()
+    {
+        return $this->hasMany(Conta::class, 'situacao_conta_id', 'id');
+    }
 }

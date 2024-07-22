@@ -15,4 +15,9 @@ class Conta extends Model
     protected $table = 'contas';
 
     protected $fillable = ['nome', 'valor', 'vencimento'];
+
+    public function situacaoConta()
+    {
+        return $this->belongsTo(SituacaoConta::class);
+    }
 }

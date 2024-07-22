@@ -59,20 +59,20 @@
                 <table class="table table-hover border">
                     <thead>
                     <tr style="text-align: center" class="table-dark">
-                        <th scope="col">ID</th>
                         <th scope="col">NOME</th>
                         <th scope="col">VALOR</th>
                         <th scope="col">VENCIMENTO</th>
+                        <th scope="col">SITUAÇÃO</th>
                         <th scope="col">AÇÕES</th>
                     </tr>
                     </thead>
                     <tbody>
                     @forelse($contas as $conta)
                         <tr class="text-center">
-                            <td>{{ $conta->id }}</td>
                             <td>{{ $conta->nome }}</td>
                             <td>{{ 'R$ ' . number_format($conta->valor, 2, ',', '.') }}</td>
                             <td>{{ \Carbon\Carbon::parse($conta->vencimento)->tz('America/Sao_Paulo')->format('d/m/Y') }}</td>
+                            <td>{!! '<span class="badge text-bg-'.$conta->situacaoConta->cor.'">'.$conta->situacaoConta->nome.'</span>' !!}</td>
                             <td class="text-center">
                                 <a class="btn btn-primary btn-sm" href="{{ route('contas.show', ['conta' => $conta->id]) }}">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
