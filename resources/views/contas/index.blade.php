@@ -43,7 +43,7 @@
             </div>
         </div>
 
-        <x-alert />
+        @include('components.alert')
 
         <div class="card shadow-sm border-blacke">
             <div class="card-header d-flex justify-content-between">
@@ -110,7 +110,7 @@
         </div>
     </div>
 
-    @foreach($contas as $conta)
+    @foreach( $contas as $conta )
         <div class="modal fade" id="modalDelete{{ $conta->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <form action="{{ route('contas.destroy', ['conta' => $conta->id]) }}" method="POST">
                 @csrf

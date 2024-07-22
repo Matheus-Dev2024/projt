@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-//use Barryvdh\DomPDF\Facade as PDF;
 use App\Http\Requests\ContaRequest;
 use App\Models\Conta;
+use App\Models\RelatorioDiario;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class ContasController extends Controller
 {
-
     public function index(Request $request)
     {
         $contas = Conta::when($request->has('nome'), function ($query) use ($request) {
@@ -52,7 +52,6 @@ class ContasController extends Controller
             ]);
 
             return redirect()->route('contas.show', ['conta' => $conta->id])->with('success', 'Conta cadastrada com sucesso!');
-
         } catch (\Exception $e) {
             Log::error('CONTA NÃO CADASTRADA - ' . $e->getMessage());
             return back()->withInput()->with('error', 'Erro ao cadastrar conta.');
@@ -81,9 +80,13 @@ class ContasController extends Controller
             ]);
 
             Log::info('CONTA EDITADA COM SUCESSO', ['id' => $conta->id, 'conta' => $conta]);
+
             return redirect()->route('contas.edit', ['conta' => $conta->id])->with('success', 'Conta alterada com sucesso!');
+
         } catch (\Exception $e) {
+
             Log::error('CONTA NÃO EDITADA - ' . $e->getMessage());
+
             return back()->withInput()->with('error', 'Erro ao editar conta.');
         }
     }

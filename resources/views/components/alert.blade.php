@@ -13,7 +13,7 @@
 @endif
 
 
-@if($errors->any())
+@if( $errors->any())
         @php
         $mensagem = '';
         foreach($errors->all() as $error) {
@@ -22,6 +22,7 @@
         @endphp
 
         <script>
+            console.log('deu certo')
             document.addEventListener('DOMContentLoaded', () => {
                 Swal.fire({
                     title: 'ERROR!',
