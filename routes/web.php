@@ -21,6 +21,7 @@ Route::get('/contas/show/{conta}',[ContasController::class, 'show'])->name('cont
 Route::get('/contas/edit/{conta}', [ContasController::class, 'edit'])->name('contas.edit');
 Route::put('/contas/update/{conta}', [ContasController::class, 'update'])->name('contas.update');
 Route::delete('/contas/destroy/{conta}', [ContasController::class, 'destroy'])->name('contas.destroy');
+Route::get('/contas/change-situation/{conta}', [ContasController::class, 'changeSituation'])->name('contas.change-situation');
 Route::get('/gerar-pdf-conta', [ContasController::class, 'gerarpdf'])-> name('contas.gerar-pdf');
 
 

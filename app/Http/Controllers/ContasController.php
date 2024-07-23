@@ -9,6 +9,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use mysql_xdevapi\Exception;
 
 class ContasController extends Controller
 {
@@ -132,4 +133,22 @@ class ContasController extends Controller
 
         return $pdf->download('listar_contas.pdf');
     }
+
+
+    public function changeSituation(Conta $conta)
+    {
+        try {
+            $conta->update([
+                'situacao_conta_id' => $conta->situacao_conta_id == 1 ? 2 : 1,
+            ]);
+            Log::info('Situação da conta editada com sucesso', ['id' => $conta->id, 'conta' => $conta]);
+
+            return back()->with('success', 'Situação da conta editada com sucesso!');
+        } catch (\Exception $e) {
+            Log::error('Situação da conta não editada - ' . $e->getMessage());
+
+            return back()->with('error', 'Situação da conta não editada!');
+        }
+    }
 }
+

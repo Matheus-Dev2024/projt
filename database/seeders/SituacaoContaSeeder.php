@@ -18,13 +18,13 @@ class SituacaoContaSeeder extends Seeder
         if (!SituacaoConta::where('nome', 'pendente')->first()) {
             SituacaoConta::create([
                 'nome' => 'pendente',
-                'cor' => 'danger',
+                'cor' => 'warning',
             ]);
         }
-        if (!SituacaoConta::where('nome', 'A pagar')->first()) {
+        if (!SituacaoConta::where('nome', 'atrasada')->first()) {
             SituacaoConta::create([
-                'nome' => 'A pagar',
-                'cor' => 'warning',
+                'nome' => 'atrasada',
+                'cor' => 'danger',
             ]);
         }
     }

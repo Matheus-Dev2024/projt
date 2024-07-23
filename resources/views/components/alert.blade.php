@@ -5,7 +5,7 @@
                 title: 'Pronto!',
                 text: "{{ session('success') }}",
                 icon: 'success',
-                timer: 2000,
+                timer: 1500,
                 showConfirmButton: false
             });
         });
@@ -14,7 +14,7 @@
 @if( $errors->any())
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            let errors = @json( $errors->all());
+            let errors = @json( $errors->all() );
             let errorMessage = errors.map(error => `<div>${error}</div>`).join('');
 
             Swal.fire({

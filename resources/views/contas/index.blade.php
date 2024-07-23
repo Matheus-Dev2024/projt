@@ -67,12 +67,27 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @forelse($contas as $conta)
+                    @forelse( $contas as $conta)
                         <tr class="text-center">
-                            <td>{{ $conta->nome }}</td>
-                            <td>{{ 'R$ ' . number_format($conta->valor, 2, ',', '.') }}</td>
-                            <td>{{ \Carbon\Carbon::parse($conta->vencimento)->tz('America/Sao_Paulo')->format('d/m/Y') }}</td>
-                            <td>{!! '<span class="badge text-bg-'.$conta->situacaoConta->cor.'">'.$conta->situacaoConta->nome.'</span>' !!}</td>
+                            <td>
+                                {{ $conta->nome }}
+                            </td>
+
+                            <td>
+                                {{ 'R$ ' . number_format($conta->valor, 2, ',', '.') }}
+                            </td>
+
+                            <td>
+                                {{ \Carbon\Carbon::parse($conta->vencimento)->tz('America/Sao_Paulo')->format('d/m/Y') }}
+                            </td>
+
+                            <td>
+                                <a href="{{ route('contas.change-situation', ['conta' => $conta->id]) }}">
+                                    <span class="badge text-bg-{{ $conta->situacaoConta->cor }}">{{ $conta->situacaoConta->nome }}</span>
+                                </a>
+                            </td>
+
+
                             <td class="text-center">
                                 <a class="btn btn-primary btn-sm" href="{{ route('contas.show', ['conta' => $conta->id]) }}">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
