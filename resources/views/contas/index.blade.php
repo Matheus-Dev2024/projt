@@ -51,8 +51,9 @@
                     <h3>Lista de contas</h3>
                 </div>
                 <span>
-                <a class="btn btn-success btn-sm mt-1" href="{{ route('contas.create') }}">Cadastrar</a>
-                <a class="btn btn-warning btn-sm mt-1" href="{{ url('gerar-pdf-conta?' . request()->getQueryString()) }}">Gerar PDF</a>
+                <a class="btn btn-outline-primary btn-sm mt-1" href="{{ route('contas.create') }}">Cadastrar</a>
+                <a class="btn btn-outline-warning btn-sm mt-1" href="{{ url('gerar-pdf-conta?' . request()->getQueryString()) }}">Gerar PDF</a>
+                <a class="btn btn-outline-success btn-sm mt-1" href="{{ url('gerar-csv-conta?' . request()->getQueryString()) }}">Execel</a>
             </span>
             </div>
             <div class="card-body shadow-sm border-black">

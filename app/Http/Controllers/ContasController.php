@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use mysql_xdevapi\Exception;
+use Illuminate\Support\Str;
 
 class ContasController extends Controller
 {
@@ -28,7 +29,6 @@ class ContasController extends Controller
             ->orderBy('created_at', 'DESC')
             ->paginate(10)
             ->withQueryString();
-
 
 
         return view('contas.index', [
@@ -139,7 +139,7 @@ class ContasController extends Controller
     {
         try {
             $conta->update([
-                'situacao_conta_id' => $conta->situacao_conta_id == 1 ? 2 : 1,
+                'situacao_conta_id' => ($conta->situacao_conta_id == 1 ? 2 : ($conta->situacao_conta_id == 2 ? 3 : 1))
             ]);
             Log::info('Situação da conta editada com sucesso', ['id' => $conta->id, 'conta' => $conta]);
 
@@ -150,5 +150,61 @@ class ContasController extends Controller
             return back()->with('error', 'Situação da conta não editada!');
         }
     }
-}
 
+
+
+    public function gerarCsv(Request $request)
+    {
+        // Buscar os dados do banco de dados
+        $contas = Conta::when($request->has('nome'), function ($query) use ($request) {
+            $query->where('nome', 'like', '%' . $request->nome . '%');
+        })
+            ->when($request->filled('data_inicio'), function ($query) use ($request) {
+                $query->where('vencimento', '>=', \Carbon\Carbon::parse($request->data_inicio)->format('Y-m-d'));
+            })
+            ->when($request->filled('data_fim'), function ($query) use ($request) {
+                $query->where('vencimento', '<=', \Carbon\Carbon::parse($request->data_fim)->format('Y-m-d'));
+            })
+            ->with('situacaoConta')
+            ->orderBy('created_at', 'DESC')
+            ->get();
+
+        // Calcular o valor total
+        $totalValor = $contas->sum('valor');
+
+        // Nome do arquivo CSV
+        $csvNomeArquivo = 'relatorio_contas.csv';
+        $arquivoAberto = fopen($csvNomeArquivo, 'w');
+
+        // Cabeçalho
+        $cabecalho = [
+            'Nome',
+            'Vencimento',
+            mb_convert_encoding('Situação', 'ISO-8859-1', 'UTF-8'),
+            'Valor'
+        ];
+        fputcsv($arquivoAberto, $cabecalho, ';');
+
+        // Adicionar dados das contas
+        foreach ($contas as $conta) {
+            $linha = [
+                mb_convert_encoding($conta->nome, 'ISO-8859-1', 'UTF-8'),
+                \Carbon\Carbon::parse($conta->vencimento)->format('Y-m-d'),
+                mb_convert_encoding($conta->situacaoConta->nome, 'ISO-8859-1', 'UTF-8'),
+                number_format($conta->valor, 2, ',', '.')
+            ];
+            fputcsv($arquivoAberto, $linha, ';');
+        }
+
+        // Rodapé
+        $rodape = ['', '', '', number_format($totalValor, 2, ',', '.')];
+        fputcsv($arquivoAberto, $rodape, ';');
+
+        // Fechar o arquivo
+        fclose($arquivoAberto);
+
+        // Retornar o arquivo para download
+        return response()->download($csvNomeArquivo, 'relatorio_contas_' . Str::ulid() . '.csv')->deleteFileAfterSend(true);
+    }
+
+}

@@ -11,3 +11,9 @@ inputValor.addEventListener('input', function (){
 
 
 });
+    $(function() {
+        $('.select2').select2({
+            theme: 'bootstrap-5',
+            placeholder: "Selecione"
+        });
+    });

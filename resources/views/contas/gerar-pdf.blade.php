@@ -15,7 +15,6 @@
     <table style="border-collapse:collapse; width: 100%; background-color: #ffffff" >
         <thead>
         <tr  style="text-align: center; background-color: #a2a2a2" >
-            <th>ID</th>
             <th >NOME</th>
             <th >VENCIMENTO</th>
             <th>VALOR</th>
@@ -25,7 +24,6 @@
         <tbody>
         @forelse($contas as $conta)
             <tr style="text-align: center; border: none" >
-                <td style="border: 1px solid #ccc;">{{ $conta->id }}</td>
                 <td style="border: 1px solid #ccc;">{{ $conta->nome }}</td>
                 <td style="border: 1px solid #ccc;">{{ \Carbon\Carbon::parse($conta->vencimento)->tz('America/Sao_Paulo')->format('d/m/Y')}}</td>
                 <td style="border: 1px solid #ccc; ">{{ 'R$ ' . number_format($conta->valor, 2, ',', '.') }}</td>

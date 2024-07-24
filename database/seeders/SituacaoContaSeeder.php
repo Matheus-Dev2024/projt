@@ -15,17 +15,18 @@ class SituacaoContaSeeder extends Seeder
                 'cor' => 'success',
             ]);
         }
-        if (!SituacaoConta::where('nome', 'pendente')->first()) {
-            SituacaoConta::create([
-                'nome' => 'pendente',
-                'cor' => 'warning',
-            ]);
-        }
         if (!SituacaoConta::where('nome', 'atrasada')->first()) {
             SituacaoConta::create([
                 'nome' => 'atrasada',
                 'cor' => 'danger',
             ]);
         }
+        if (!SituacaoConta::where('nome', 'pendente')->first()) {
+            SituacaoConta::create([
+                'nome' => 'pendente',
+                'cor' => 'warning',
+            ]);
+        }
+
     }
 }

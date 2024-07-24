@@ -23,6 +23,7 @@ Route::put('/contas/update/{conta}', [ContasController::class, 'update'])->name(
 Route::delete('/contas/destroy/{conta}', [ContasController::class, 'destroy'])->name('contas.destroy');
 Route::get('/contas/change-situation/{conta}', [ContasController::class, 'changeSituation'])->name('contas.change-situation');
 Route::get('/gerar-pdf-conta', [ContasController::class, 'gerarpdf'])-> name('contas.gerar-pdf');
+Route::get('/gerar-csv-conta', [ContasController::class, 'gerarCsv'])-> name('contas.gerar-csv');
 
 
 
