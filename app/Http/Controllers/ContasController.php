@@ -155,7 +155,6 @@ class ContasController extends Controller
 
     public function gerarCsv(Request $request)
     {
-        // Buscar os dados do banco de dados
         $contas = Conta::when($request->has('nome'), function ($query) use ($request) {
             $query->where('nome', 'like', '%' . $request->nome . '%');
         })
@@ -169,14 +168,11 @@ class ContasController extends Controller
             ->orderBy('created_at', 'DESC')
             ->get();
 
-        // Calcular o valor total
         $totalValor = $contas->sum('valor');
 
-        // Nome do arquivo CSV
         $csvNomeArquivo = 'relatorio_contas.csv';
         $arquivoAberto = fopen($csvNomeArquivo, 'w');
 
-        // Cabeçalho
         $cabecalho = [
             'Nome',
             'Vencimento',
@@ -185,7 +181,6 @@ class ContasController extends Controller
         ];
         fputcsv($arquivoAberto, $cabecalho, ';');
 
-        // Adicionar dados das contas
         foreach ($contas as $conta) {
             $linha = [
                 mb_convert_encoding($conta->nome, 'ISO-8859-1', 'UTF-8'),
@@ -196,14 +191,11 @@ class ContasController extends Controller
             fputcsv($arquivoAberto, $linha, ';');
         }
 
-        // Rodapé
         $rodape = ['', '', '', number_format($totalValor, 2, ',', '.')];
         fputcsv($arquivoAberto, $rodape, ';');
 
-        // Fechar o arquivo
         fclose($arquivoAberto);
 
-        // Retornar o arquivo para download
         return response()->download($csvNomeArquivo, 'relatorio_contas_' . Str::ulid() . '.csv')->deleteFileAfterSend(true);
     }
 
